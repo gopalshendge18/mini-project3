@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from comcross.views import greeting
+from comcross.views import greeting,amazon
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('greeting/',greeting)
+    path('greeting/',greeting),
+    path('amazon/',amazon),
 ]
