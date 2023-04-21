@@ -34,3 +34,4 @@ bs = BeautifulSoup(response.text, "html.parser")
 tags= bs.find_all(class_ ="s-card-container s-overflow-hidden aok-relative puis-expand-height puis-include-content-margin puis s-latency-cf-section s-card-border")
 print("ASsa\n",type(tags))
  # displaying html file use bs.prettify() for making the document more readable
+
