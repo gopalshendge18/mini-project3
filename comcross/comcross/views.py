@@ -1,4 +1,3 @@
-
 from rest_framework import status, viewsets
 import requests
 from rest_framework.response import Response
@@ -17,9 +16,9 @@ from django.shortcuts import render, redirect
 
 from django.contrib.auth import login
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout  # add this
+from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
-from django.contrib.auth.forms import AuthenticationForm  # add this
+from django.contrib.auth.forms import AuthenticationForm
 import requests
 import time
 from bs4 import BeautifulSoup
@@ -32,69 +31,58 @@ import pandas as pd
 from django.http import HttpResponse
 from django.http import JsonResponse
 
+
 def greeting(request):
-    base_url = 'https://www.flipkart.com/search?q=smartphones'
-    base_url = ''
+    
+    query = request.GET.get('q', '')
+    category = request.GET.get('category', 'all')
+    base_url = 'https://www.flipkart.com/search?q={}'.format(query)
+    print(base_url)
+    print(category)
+    print(query)
+
     pd_name = []
     price = []
-    
-    
-    for i in range(1, 3):
-        time.sleep(3)
+    img   = []
+    for i in range(1, 10):
+
         req = requests.get(base_url+str(i))
         soup = BeautifulSoup(req.text, 'html')
 
-        # product name
         pdt_name = soup.findAll('div', attrs={'class': '_4rR01T'})
         [pd_name.append(i.text) for i in pdt_name]
+        
+        img_name = soup.findAll('img', attrs={'class': '_396cs4'})
+        [img.append(i['src']) for i in img_name]
 
-        # price
         p = soup.findAll('div', attrs={'class': '_30jeq3 _1_WHN1'})
         [price.append(i.text) for i in p]
-
-        # ratings
-        # r = soup.findAll('div', attrs={'class': 'gUuXy-'})
-        # [ratings.append(i.span.div.text) for i in r]
-
-        # # warranty
-        # wl = soup.findAll('ul', attrs={'class': '_1xgFaf'})
-        # w = [i.findAll('li')[-1] for i in wl]
-        # [warranty.append(i.text) for i in w]
-
-        # # number of ratings and reviews
-        # a = soup.findAll('span', attrs={'class': '_2_R_DZ'})
-        # for i in a:
-        #     a = i.text.split('&')
-        #     ratingsno.append(a[0].split(" ")[0])
-        #     reviewsno.append(a[1].split(" ")[0])
-
-        # # features
-        # prop = soup.findAll('ul', attrs={'class': '_1xgFaf'})
-        # for i in prop:
-        #     a = i.findAll('li')[0:-2]
-        #     b = [i.text for i in a]
-        #     features.append(','.join(b))
-
+    
     print('pd_name = ', len(pd_name))
     print('price = ', len(price))
-    # print('ratings = ', len(ratings))
-    # print('warranty = ', len(warranty))
-    # print('ratingsno =', len(ratingsno))
-    # print('reviewsno = ', len(reviewsno))
-    # print('features = ', len(features))
-    
+
+    if len(price)==0:
+        for i in range(1, 3):
+            req = requests.get(base_url+str(i))
+            soup = BeautifulSoup(req.text, 'html')
+            print(soup.prettify())
+            pdt_name = soup.findAll('a', attrs={'class': 'IRpwTa'})
+            [pd_name.append(i.text) for i in pdt_name]
+
+            p = soup.findAll('div', attrs={'class': '_30jeq3'})
+            [price.append(i.text) for i in p]
+    print('pd_name = ', len(pd_name))
+    print('price = ', len(price))
+    print('price = ', len(img ))
     data = pd.DataFrame({'Product': pd_name,
-                         'Price': price
-                        #  'Ratings': ratings,
-                        #  'Warranty': warranty,
-                        #  'No of Ratings': ratingsno,
-                        #  'No of Reviews': reviewsno,
-                        #  'Features': features 
-                        })
-    json_data = data.to_json(orient='records')
-    na = data.iloc[0]
+                         'Price': price,'img_url': img})
+    
+    print(data)     
 
-    print(na['Product'])
+    return render(request,'index.html',{'data':data})
+  
 
-    return HttpResponse(json_data, content_type='application/json')
 
+def home(request):
+    
+    return render(request,'home.html')

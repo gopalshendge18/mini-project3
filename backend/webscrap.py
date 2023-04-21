@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 
 import requests
 
-url = "https://www.amazon.in/s?k=penut+butter"
+url = "https://www.amazon.in/s?k=realme+7"
 
 
 headers = {
@@ -33,4 +33,5 @@ with open("webpg.html","w", encoding="utf-8") as file: # saving html file to dis
 bs = BeautifulSoup(response.text, "html.parser")
 tags= bs.find_all(class_ ="s-card-container s-overflow-hidden aok-relative puis-expand-height puis-include-content-margin puis s-latency-cf-section s-card-border")
 print("ASsa\n",type(tags))
-print(tags[0][0].encode("utf-8")) # displaying html file use bs.prettify() for making the document more readable
+ # displaying html file use bs.prettify() for making the document more readable
+

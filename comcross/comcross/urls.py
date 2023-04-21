@@ -16,9 +16,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from comcross.views import greeting
+from comcross.views import home
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('greeting/',greeting)
+    path('greeting/',greeting),
+    path('home/',home)
 ]
+
+
+
+            
