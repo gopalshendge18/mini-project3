@@ -17,8 +17,8 @@ from django.contrib import admin
 from django.urls import path
 
 from comcross.views import greeting,amazon
-
-from comcross.views import greeting
+from comcross import views
+from comcross.views import greeting 
 from comcross.views import home
 
 
@@ -30,7 +30,11 @@ urlpatterns = [
 
     path('amazon/',amazon),
 
-    path('home/',home)
+    path('home/',home),
+    
+    path('go-to-flipkart/<path:url>', views.redirect_to_flipkart, name='go-to-flipkart'),
+
+    path('go-to-amazon/<path:url>', views.redirect_to_amazon, name='go-to-amazon')
 
 ]
 

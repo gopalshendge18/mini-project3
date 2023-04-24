@@ -58,21 +58,33 @@
   border-radius: 5px;
   height: fit-content;
 }
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 	</style>
 </head>
 <body>
     <div class="d-flex justify-content-around mt-5">
 	
-    <form action="/greeting" method="get">
+    <form action="/greeting" method="get" id ='seachproduct'>
         <div class="row"> 
             <div class="col-6">
         <input type="text" name="q" placeholder="Search for products..."></div>
         <div class="col-4">
         <select name="category">
-          <option value="all">All categories</option>
-          <option value="electronics">Electronics</option>
-          <option value="fashion">Fashion</option>
+          <option value="" disabled selected  >Sort BY</option>
+          <option value="electronics">Low to high price</option>
+          <option value="fashion">High to low price</option>
           <option value="home">Home and Kitchen</option>
         </select></div>
         <div class="col-2">
@@ -80,55 +92,62 @@
     </div>
       </form>
     </div>
-    </div>
+    
 	<!-- Replace this with your own code to retrieve product data from different ecommerce websites -->
    
-    
-    
-    <div class="continer mt-5">
-    <div class="row">
-    <div class="d-flex justify-content-around">
- <h1>Amazon
- </h1>
- <h1>Flipkart
-</h1>
-<h1>Snapdeal
-</h1>
-</div>
-    <div class="justify-content-around">
-          
-        {% for index, row in data.iterrows %}
+
+
+  
+    <div class="container mt-5">
         <div class="row">
-        <div class="col-4 ">
-    <div class="card mx-5">
-        <img src="{{row.img_url}}" alt="Product Image">
-        <h2>Product Name: {{ row.Product }}</h2>
-        <p>Price: {{ row.Price }}</p>
-        <a href="#">Buy Now</a>
-    </div></div>
-    <div class="col-4">
-    <div class="card mx-5">
-        <img src="https://via.placeholder.com/300x200.png?text=Product+Image" alt="Product Image">
-        <h2>Product Name: {{ row.Product }}</h2>
-        <p>Price: {{ row.Price }}</p>
-        <a href="#">Buy Now</a>
-    </div></div>
-    <div class="col-4">
-    <div class="card mx-5">
-        <img src="https://via.placeholder.com/300x200.png?text=Product+Image" alt="Product Image">
-        <h2>Product Name: {{ row.Product }}</h2>
-        <p>Price: {{ row.Price }}</p>
-        <a href="#">Buy Now</a>
-    </div>
-    </div>
-</div>
-{% endfor %}
-
-
-
-       
-    </div></div>
-</div>
+          <div class="d-flex justify-content-around">
+            <h1>Amazon</h1>
+            <h1>Flipkart</h1>
+            <h1>Chroma</h1>
+          </div>
+        </div>
+        <div class="row justify-content-between">
+        
+          <div class="row">
+           
+            <div class="col-4">
+                {% for index, row in data.iterrows %}
+                {% if row.Website == 'Amazon' %}
+              <div class="card mx-2">
+               
+                <img src="" alt="Product Image">
+                <h2>Product Name: {{ row.Product}}</h2>
+                <p>Price: {{ row.Price }}</p>
+                <p>Website: {{ row.Website }}</p>
+                <a href="/go-to-amazon/{{row.url}}" target="_blank">Buy Now</a>
+                
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+            
+          
+            
+           
+            <div class="col-4">
+                {% for index, row in data.iterrows %}
+                {% if row.Website == 'Flipkart' %}
+              <div class="card mx-2">
+               
+                <img src="" alt="Product Image">
+                <h2>Product Name: {{ row.Product }}</h2>
+                <p>Price: {{ row.Price }}</p>
+                <p>Website: {{ row.Website }}</p>
+                <a href="/go-to-flipkart/{{row.url}}" target="blank">Buy Now</a>
+               
+              </div>
+              {% endif %}
+              {% endfor %}
+            </div>
+           
+              
+              
+            
 	<!-- Repeat the card element above for each product you want to display -->
 </body>
 </html>
